@@ -4,7 +4,7 @@
 }
 body{
     background: linear-gradient(rgb(206, 85, 105),purple) no-repeat;
-    height: 100vh;
+    height: 100dvh;
     box-sizing: border-box;
     padding: 7px 10px;
     display: flex;

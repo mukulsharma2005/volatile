@@ -30,6 +30,7 @@
             if (input_box.value) {
                 socket.emit("message", input_box.value)
                 input_box.value = ""
+                input_box.focus()
             }
         })
         try {
