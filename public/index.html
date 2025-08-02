@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volatile-Chat App</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="chat_box">
+        <div class="notification">Chat Begin</div>
+
+    </div>
+    <form action="" class="chat_input">
+        <input type="text" name="message" id="">
+        <button>➤</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io()
+        const chat_box = document.querySelector(".chat_box");
+
+        const chat_input = document.querySelector(".chat_input");
+        const input_box = document.querySelector(".chat_input input")
+        let username = "";
+        chat_input.addEventListener('submit', (e) => {
+            e.preventDefault()
+            if (input_box.value) {
+                socket.emit("message", input_box.value)
+                input_box.value = ""
+            }
+        })
+        try {
+            const rawCookie = document.cookie.split(";");
+            const Cookie = {};
+            rawCookie.forEach((element) => {
+                Cookie[element.split("=")[0]] = element.split("=")[1]
+            })
+            if (Cookie.username) {
+                username = decodeURIComponent(Cookie.username);
+            } else {
+                throw new Error()
+            }
+        } catch (error) {
+            while (!username) {
+                username = prompt("Enter name to chat").trim();
+            }
+            document.cookie = `username=${encodeURIComponent(username)}; path=/; max-age=31536000`;
+        }
+        socket.emit("username", username)
+
+        socket.on("chat-message", (msg) => {
+
+            const message = document.createElement("div")
+            if (msg.username != username) {
+                message.className = "message-other"
+                message.innerHTML = msg.username + " : " + msg.message
+            }
+            else {
+                message.className = "message-you"
+                message.innerHTML = msg.message
+            }
+            chat_box.appendChild(message)
+            chat_box.scrollTop = chat_box.scrollHeight
+        })
+
+        socket.on("notify", (notify) => {
+            const notification = document.createElement("div")
+            notification.className = "notification"
+            notification.innerHTML = notify
+            chat_box.appendChild(notification)
+        })
+    </script>
+</body>
+
+</html>
