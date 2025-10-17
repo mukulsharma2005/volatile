@@ -1,0 +1,32 @@
+name: Deploy Frontend to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Or 'master' if that is your main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' 
+          cache: 'npm' 
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build and Deploy
+        run: |
+          # --- Environment Variables are set here ---
+          VITE_BASE_API_URL='https://volatileapi.onrender.com' \
+          VITE_API_ENDPOINT='https://volatileapi.onrender.com/api/v1' \
+          npm run build
+          npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
