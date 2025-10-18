@@ -15,7 +15,7 @@ configDotenv()
 
 const app = express();
 const corsOptions = {
-    origin: ['http://localhost:5173',"https://9xl0hhlf-5173.inc1.devtunnels.ms","https://mukulsharma2005.github.io/volatile"], // Replace with your client's origin
+    origin: "*",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow cookies and authentication headers
     optionsSuccessStatus: 204 // For preflight requests
