@@ -1,37 +1,24 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
+import sgMail from "@sendgrid/mail";
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sendEmail = (to, subject, html) => {
+  const msg = {
+    to, // Recipient email
+    from: process.env.FROM_EMAIL, // Verified Sender
+    subject,
+    html,
+  };
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASSWORD 
-    }
-});
-
-export const sendEmail = async (to, subject, htmlContent) => {
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: to,
-        subject: subject,
-        html: htmlContent,
-    };
-
-    try {
-        let info = await transporter.sendMail(mailOptions);
-        return info;
+try {
+  return sgMail.send(msg); // Returns a promise
     } catch (error) {
         console.error('Error sending email:', error);
         throw error;
-    }
-};
+    }};
 
-transporter.verify((error, success) => {
-    if (error) {
-        console.log("Transporter error:", error);
-    } 
-});
+
 
 export const sendOtpEmail = async (otp,otpExpiryMinutes,email) => {
     const subject = "One Time Password for creating an account on Volatile."

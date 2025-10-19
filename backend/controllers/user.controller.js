@@ -11,7 +11,7 @@ import chatModel from "../models/chat.model.js";
 import { io } from "../index.js";
 import { usersMap } from "../connection/connection.handler.js";
 import groupModel from "../models/group.model.js";
-import { sendOtpEmail } from "../config/nodemailer.js";
+import { sendOtpEmail } from "../config/emailService.js";
 configDotenv()
 let usersToVerify = [];
 export async function createUser(req, res) {
