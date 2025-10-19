@@ -15,7 +15,7 @@ configDotenv()
 
 const app = express();
 const corsOptions = {
-    origin: ["https://mukulsharma2005.github.io/volatile"],
+    origin: ["https://mukulsharma2005.github.io"],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow cookies and authentication headers
     optionsSuccessStatus: 204 // For preflight requests
