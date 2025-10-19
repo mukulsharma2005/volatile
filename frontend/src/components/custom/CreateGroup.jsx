@@ -70,7 +70,7 @@ const CreateGroup = ({ selected, setSelected }) => {
                 <div className='w-fit mx-auto relative'>
                     <label htmlFor='groupPic'>
                     <Avatar className={"size-36"}>
-                        <AvatarImage className={""} src={groupPicURL || "https://github.com/shadcn.png"} alt="User" />
+                        <AvatarImage className={""} src={groupPicURL || "/volatile/user.jpg"} alt="User" />
                         <AvatarFallback>Error</AvatarFallback>
                     </Avatar>
                     </label>

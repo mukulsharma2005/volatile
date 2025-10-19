@@ -18,7 +18,7 @@ const GroupMember = ({ member, isCreator, isAdmin, chat_id,isGroupDeleted }) => 
         <div className={`w-full ${(user._id == member._id) && "order-first"} py-1 border-gray-600 flex gap-3 box-border px-4 items-center justify-between hover:backdrop-brightness-125 `}>
             <div className="pic">
                 <Avatar className={"size-10"}>
-                    <AvatarImage className={"w-20"} src={member?.profilePic?.url || "https://github.com/shadcn.png"} alt="User" />
+                    <AvatarImage className={"w-20"} src={member?.profilePic?.url || "/volatile/user.jpg"} alt="User" />
                     <AvatarFallback>Error</AvatarFallback>
                 </Avatar>
             </div>

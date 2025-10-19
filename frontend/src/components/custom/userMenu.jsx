@@ -8,7 +8,7 @@ const UserMenu = ({selected,setSelected}) => {
   return (
     <div className='bg-gray-800 flex flex-col items-center justify-center p-2 box-border w-full'>
       <Avatar className={"size-16"} onClick={(e) => { setChatInfoOpen(chat?._id); e.stopPropagation() }}>
-        <AvatarImage src={ user?.profilePic?.url || "/user.jpg"} alt="User" />
+        <AvatarImage src={ user?.profilePic?.url || "/volatile/user.jpg"} alt="User" />
         <AvatarFallback>Error</AvatarFallback>
       </Avatar>
       <h3 className='font-semibold text-xl text-white'>{user?.username}</h3>

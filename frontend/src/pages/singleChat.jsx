@@ -93,7 +93,7 @@ const SingleChat = ({ orient, setChatInfoOpen }) => {
                     <div className="profilePic mr-1 flex items-center">
                         <ImageViewer url={currentChat?.chatPic || "/user.jpg"}>
                             <Avatar className={"lg:size-7"}>
-                                <AvatarImage src={currentChat?.chatPic || "/user.jpg"} alt="User" />
+                                <AvatarImage src={currentChat?.chatPic || "/volatile/user.jpg"} alt="User" />
                                 <AvatarFallback>Error</AvatarFallback>
                             </Avatar>
                         </ImageViewer>

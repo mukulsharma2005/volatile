@@ -64,7 +64,7 @@ const Profile = ({ selected, setSelected }) => {
                 <div className='w-fit mx-auto relative'>
                     <label htmlFor='profilePic'>
                         <Avatar className={"size-40"}>
-                            <AvatarImage className={""} src={profilePic  || "/user.jpg"} alt="User" />
+                            <AvatarImage className={""} src={profilePic  || "/volatile/user.jpg"} alt="User" />
                             <AvatarFallback>Error</AvatarFallback>
                         </Avatar>
                         <Pencil className='absolute bottom-0 right-0 size-10 rounded-full p-2 bg-blue-500 overflow-visible' />
