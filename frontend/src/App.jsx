@@ -11,7 +11,7 @@ function App() {
     <div className=' min-h-[100dvh] box-border '>
       <SocketContext.Provider value={{socket,setSocket}}>
         
-        <HashRouter>
+        <BrowserRouter basename='/volatile'>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/chats" element={<Chats />} />
@@ -19,7 +19,7 @@ function App() {
             <Route path="/signin" element={<Login />} />
             <Route path="/signup/otpverify" element={<OtpVerify />} />
           </Routes>
-        </HashRouter>
+        </BrowserRouter>
       </SocketContext.Provider>
     </div>
   )
