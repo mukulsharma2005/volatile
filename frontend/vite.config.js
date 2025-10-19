@@ -5,6 +5,7 @@ import path from "path";
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/volatile/",
   plugins: [react(), tailwindcss(), nodePolyfills(), ],
   resolve: {
     alias: {
