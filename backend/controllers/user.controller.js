@@ -78,7 +78,9 @@ export async function createUser(req, res) {
         })
     } catch (error) {
         console.log(error)
-        return res.status(500)
+        return res.status(500).json({
+            message: error.message,
+        })
     }
 
 }
