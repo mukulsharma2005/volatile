@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLiveSortedChats } from "./chats";
 import { setUser } from "@/redux/auth.slice";
 import { toast } from "sonner";
-const BASE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+import { BASE_API_ENDPOINT } from "@/utils/constants";
 export function useGetUsers() {
     const [response, setResponse] = useState("");
     const [load, setLoad] = useState(false);

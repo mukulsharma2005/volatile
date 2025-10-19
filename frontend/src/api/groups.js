@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
-const BASE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+import { BASE_API_ENDPOINT } from "@/utils/constants";
 export function useGetGroupStatus(chat_id) {
     const user = useSelector(state => state.auth.user);
     const chats = useSelector(state => state.chats.chats);

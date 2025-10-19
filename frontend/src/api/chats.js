@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetMessages } from "./messages";
 import { toast } from "sonner";
-const BASE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+import { BASE_API_ENDPOINT } from "@/utils/constants";
 
 export function useGetChats() {
     const dispatch = useDispatch();

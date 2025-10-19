@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetMessages } from "./messages";
-const BASE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+import { BASE_API_ENDPOINT } from "@/utils/constants";
 export function useAuth() {
     const [response, setResponse] = useState("")
     const dispatch = useDispatch();

@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 import { SocketContext } from './socketContext';
 import { markDelete, updateChat, updateChatPresence } from '@/redux/chats.slice';
 import { v4 as uuidv4 } from 'uuid';
-const BASE_URL = import.meta.env.VITE_BASE_API_URL;
+import { BASE_URL } from '@/utils/constants';
 
 export function useMakeConnection() {
   const { socket, setSocket } = useContext(SocketContext);

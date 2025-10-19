@@ -1,7 +1,7 @@
 import { addMessage,  addMessages,  setLoading, setMessages } from "@/redux/message.slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-const BASE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+import { BASE_API_ENDPOINT } from "@/utils/constants";
 export function useGetMessages() {
     const dispatch = useDispatch();
     const getMessages = async () => {
