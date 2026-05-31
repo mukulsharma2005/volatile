@@ -1,24 +1,37 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
-import sgMail from "@sendgrid/mail";
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const sendEmail = (to, subject, html) => {
+import { Resend } from "resend";
+
+// Initialize Resend with your API Key
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const sendEmail = async (to, subject, html) => {
   const msg = {
-    to, // Recipient email
-    from: process.env.FROM_EMAIL, // Verified Sender
+    // Resend expects 'to' to be an array of strings, or a single string
+    to: [to], 
+    // If you don't have a custom domain verified yet, use 'onboarding@resend.dev'
+    from: process.env.FROM_EMAIL || 'onboarding@resend.dev', 
     subject,
     html,
   };
 
-try {
-  return sgMail.send(msg); // Returns a promise
-    } catch (error) {
-        console.error('Error sending email:', error);
-        throw error;
-    }};
+  try {
+    // Resend's API returns an object containing { data, error } instead of throwing 
+    // an error directly for API-level failures.
+    const { data, error } = await resend.emails.send(msg);
 
+    if (error) {
+      console.error('Resend API Error details:', error);
+      throw new Error(error.message);
+    }
 
+    return data; // Returns the delivery success metadata (like message ID)
+  } catch (error) {
+    console.error('Error sending email via Resend:', error.message);
+    throw error;
+  }
+};
 
 export const sendOtpEmail = async (otp,otpExpiryMinutes,email) => {
     const subject = "One Time Password for creating an account on Volatile."
