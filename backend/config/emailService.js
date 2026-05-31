@@ -4,11 +4,18 @@ dotenv.config();
 
 // Create the transport layer using Gmail's server configurations
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // Must be false for port 587 (STARTTLS)
     auth: {
-        user: process.env.FROM_EMAIL,      // Your actual Gmail (e.g., example@gmail.com)
-        pass: process.env.EMAIL_PASSWORD,  // The 16-character App Password
+        user: process.env.FROM_EMAIL,     // Your Gmail address
+        pass: process.env.EMAIL_PASSWORD  // Your 16-character App Password
     },
+    tls: {
+        // This prevents Render from dropping the connection if it fails 
+        // to verify local SSL certificates on its automated container runtime
+        rejectUnauthorized: false 
+    }
 });
 
 const sendEmail = async (to, subject, html) => {
