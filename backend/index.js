@@ -21,6 +21,14 @@ const corsOptions = {
     optionsSuccessStatus: 204                                  // For legacy browser preflight support
 };
 app.use(cors(corsOptions));
+
+app.use(express.urlencoded())
+app.use(express.json())
+app.use(cookieParser())
+app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/chats", chatRoutes)
+app.use("/api/v1/groups", groupRoutes)
+
 const server = createServer(app);
 const io = new Server(server, {
     cors: corsOptions
@@ -32,12 +40,6 @@ io.on("connection", (socket) => {
     connectionHandlers(socket)
 })
 export { io };
-app.use(express.urlencoded())
-app.use(express.json())
-app.use(cookieParser())
-app.use("/api/v1/users", userRoutes)
-app.use("/api/v1/chats", chatRoutes)
-app.use("/api/v1/groups", groupRoutes)
 
 const port = process.env.PORT
 
