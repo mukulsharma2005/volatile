@@ -16,9 +16,9 @@ configDotenv()
 const app = express();
 const corsOptions = {
     origin: ["https://mukulsharma2005.github.io"],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow cookies and authentication headers
-    optionsSuccessStatus: 204 // For preflight requests
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Changed to an array
+    credentials: true,                                         // Allow cookies and auth headers
+    optionsSuccessStatus: 204                                  // For legacy browser preflight support
 };
 app.use(cors(corsOptions));
 const server = createServer(app);
