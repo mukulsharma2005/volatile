@@ -69,7 +69,7 @@ export async function createUser(req, res) {
                 email, username, password: hashedPassword, otp, expiresAt
             }
         }, { upsert: true })
-        await sendOtpEmail(otp,5,email);
+        // await sendOtpEmail(otp,5,email);
         const maskedEmail = maskEmail(email)
         return res.status(200).json({
             message: "OTP has been sent.",
