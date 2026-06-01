@@ -61,12 +61,12 @@ export async function createUser(req, res) {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const otp = generateOtp();
-        const hashedOtp = crypto.createHmac('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
+        // const hashedOtp = crypto.createHmac('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000)
 
         const newOtp = await otpModel.updateOne({ email }, {
             $set: {
-                email, username, password: hashedPassword, otp: hashedOtp, expiresAt
+                email, username, password: hashedPassword, otp, expiresAt
             }
         }, { upsert: true })
         await sendOtpEmail(otp,5,email);
@@ -106,8 +106,8 @@ export async function verifyOtp(req, res) {
             })
         }
         const storedOtp = emailExists.otp;
-        const hashedOtp = crypto.createHmac('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
-        if (storedOtp !== hashedOtp) {
+        // const hashedOtp = crypto.createHmac('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
+        if (storedOtp !== otp) {
             return res.status(400).json({
                 message: "Invalid OTP", success: false
             })
