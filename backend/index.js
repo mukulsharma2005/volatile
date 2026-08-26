@@ -15,7 +15,7 @@ configDotenv()
 
 const app = express();
 const corsOptions = {
-    origin: ['http://localhost:5173','https://mukulsharma2005.github.io/volatile'],
+    origin: ['http://localhost:5173','https://mukulsharma2005.github.io'],
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Changed to an array
     credentials: true,                                         // Allow cookies and auth headers
     optionsSuccessStatus: 204,                                  // For legacy browser preflight support
