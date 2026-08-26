@@ -4,42 +4,31 @@ import crypto from "crypto"
 import jwt from "jsonwebtoken";
 import cloudinary from "../config/cloudinary.js"
 import { configDotenv } from "dotenv";
-import generateOtp from "../utils/generateOtp.js";
-import otpModel from "../models/otp.model.js";
-import maskEmail from "../utils/maskEmail.js";
 import chatModel from "../models/chat.model.js";
 import { io } from "../index.js";
 import { usersMap } from "../connection/connection.handler.js";
 import groupModel from "../models/group.model.js";
-import { sendOtpEmail } from "../config/emailService.js";
 configDotenv()
 let usersToVerify = [];
 export async function createUser(req, res) {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    const { username, password } = req.body;
+    if (!username || !password) {
         return res.status(400).json({
             message: "Something is missing",
             success: false
         })
     }
-    if (!email.endsWith("@gmail.com")) {
+    if (username < 5 || username > 30) {
         return res.status(400).json({
-            message: "Invalid email",
+            message: "Username is either too short or too long",
             success: false
         })
     }
     try {
-        const emailExists = await userModel.findOne({ email });
-        if (password.length<8){
+        if (password.length < 8) {
             return res.status(400).json({
-                message : "Password must be of minimum eight characters",
-                success : false,
-            })
-        }
-        if (emailExists) {
-            return res.status(400).json({
-                message: "Email already exists.",
-                success: false
+                message: "Password must be of minimum eight characters",
+                success: false,
             })
         }
         const usernameExists = await userModel.findOne({ username });
@@ -49,81 +38,18 @@ export async function createUser(req, res) {
                 success: false
             })
         }
-        const otpExists = await otpModel.findOne({ email });
-        if (otpExists) {
-            const resendTime = (Date.now() - otpExists.updatedAt.getTime())
-            if (resendTime < 30000) {
-                return res.status(400).json({
-                    message: `You can request otp after ${30 - Math.round(resendTime / 1000)}s}`,
-                    success: false
-                })
-            }
-        }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const otp = generateOtp();
-        // const hashedOtp = crypto.createHmac('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
-        const expiresAt = new Date(Date.now() + 5 * 60 * 1000)
 
-        const newOtp = await otpModel.updateOne({ email }, {
-            $set: {
-                email, username, password: hashedPassword, otp, expiresAt
-            }
-        }, { upsert: true })
-        // await sendOtpEmail(otp,5,email);
-        const maskedEmail = maskEmail(email)
-        return res.status(200).json({
-            message: "OTP has been sent.",
-            success: true,
-            email: maskedEmail
-        })
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            message: error.message,
-        })
-    }
-
-}
-export async function verifyOtp(req, res) {
-    const { email, otp } = req.body;
-    if (!email || !otp) {
-        return res.status(400).json({
-            message: "Something is missing", success: false
-        })
-    }
-    try {
-        const emailExists = await otpModel.findOne({ email });
-        if (!emailExists) {
-            return res.status(400).json({
-                message: "No request for otp has been made for this email",
-                success: false
-            })
-        }
-        if (Date.now() > +emailExists.expiresAt) {
-            return res.status(400).json({
-                message: "Expired otp",
-                success: false
-            })
-        }
-        const storedOtp = emailExists.otp;
-        // const hashedOtp = crypto.createHmac('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
-        if (storedOtp !== otp) {
-            return res.status(400).json({
-                message: "Invalid OTP", success: false
-            })
-        }
         const newUser = new userModel({
-            username: emailExists.username,
-            email: emailExists.email,
-            password: emailExists.password,
+            username: username,
+            password: hashedPassword,
         })
-        await newUser.save()
-        await otpModel.deleteOne({ email });
+        await newUser.save();
         const jwt_secret = process.env.JWT_SECRET
         const token = jwt.sign({
             _id: newUser._id
         }, jwt_secret, { expiresIn: "30d" })
-        return res.status(201).cookie("token", token, {
+        return res.status(200).cookie("token", token, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             secure: true,
             sameSite: "none"
@@ -133,16 +59,15 @@ export async function verifyOtp(req, res) {
             user: {
                 _id: newUser._id,
                 username: newUser.username,
-                email: newUser.email,
-                profilePic: newUser.profilePic?.url,
-                about: newUser.about
             }
-
         })
     } catch (error) {
         console.log(error)
-        return res.status(500)
+        return res.status(500).json({
+            message: error.message,
+        })
     }
+
 }
 export async function login(req, res) {
     const { username, password } = req.body;
@@ -183,8 +108,7 @@ export async function login(req, res) {
             message: "Login successfully.", success: true, user: {
                 _id: userExists._id,
                 username: userExists.username,
-                email: userExists.email,
-                profilePic: {url : userExists.profilePic?.url},
+                profilePic: { url: userExists.profilePic?.url },
                 about: userExists.about,
             }
         })
@@ -230,18 +154,18 @@ export async function updateUser(req, res) {
                 folder: "profile_pics"
             });
             query.profilePic = {
-                publicId : result.public_id,
-                url : result.secure_url,
+                publicId: result.public_id,
+                url: result.secure_url,
             }
             const existingImageId = user.profilePic?.publicId;
-            if (existingImageId){
+            if (existingImageId) {
                 await cloudinary.uploader.destroy(existingImageId);
             }
         }
-        if (typeof about === "string"){
+        if (typeof about === "string") {
             query.about = about;
         }
-        const newUser = await userModel.findByIdAndUpdate(user_id, { $set: query}, { new: true });
+        const newUser = await userModel.findByIdAndUpdate(user_id, { $set: query }, { new: true });
         const userChats = await chatModel.find({
             $or: [
                 { createdBy: { $in: user_id } },
@@ -268,7 +192,7 @@ export async function updateUser(req, res) {
                 _id: newUser._id,
                 username: newUser.username,
                 email: newUser.email,
-                profilePic: {url : newUser.profilePic?.url},
+                profilePic: { url: newUser.profilePic?.url },
                 about: newUser?.about
             }
         })

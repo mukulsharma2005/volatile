@@ -15,10 +15,11 @@ configDotenv()
 
 const app = express();
 const corsOptions = {
-    origin: ["https://mukulsharma2005.github.io"],
+    origin: ['http://localhost:5173','https://hhcm64c5-5173.inc1.devtunnels.ms'],
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Changed to an array
     credentials: true,                                         // Allow cookies and auth headers
-    optionsSuccessStatus: 204                                  // For legacy browser preflight support
+    optionsSuccessStatus: 204,                                  // For legacy browser preflight support
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
 app.use(cors(corsOptions));
 

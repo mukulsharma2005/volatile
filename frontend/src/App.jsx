@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Login from './pages/login'
 import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/home'
-import OtpVerify from './pages/otpVerify'
 import Chats from './pages/chats'
 import { SocketContext } from './sockets/socketContext'
 function App() {
@@ -17,7 +16,6 @@ function App() {
             <Route path="/chats" element={<Chats />} />
             <Route path="/signup" element={<Login type={"signup"} />} />
             <Route path="/signin" element={<Login />} />
-            <Route path="/signup/otpverify" element={<OtpVerify />} />
           </Routes>
         </HashRouter>
       </SocketContext.Provider>

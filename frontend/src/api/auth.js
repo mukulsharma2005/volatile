@@ -58,44 +58,13 @@ export function useAuth() {
             const data = await res.json();
             setResponse(data)
             if (data.success) {
-                dispatch(setEmailToVerify(user.email))
-                navigate("/signup/otpverify")
+                dispatch(setUser(data.user));
+                navigate("/chats");
+                getMessages();
             }
         } catch (error) {
             console.log(error);
             setResponse({
-                success: false,
-                message: error.message
-            })
-        } finally {
-            setLoading(false)
-        }
-
-    }
-    const verifyOtp = async (otp) => {
-        if (!emailToVerify) {
-            return navigate("..")
-        }
-        try {
-            setLoading(true)
-            const res = await fetch(`${BASE_API_ENDPOINT}/users/verify`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify({ email: emailToVerify, otp })
-            });
-            const data = await res.json();
-            setResponse(data)
-            if (data.success) {
-                dispatch(setUser(data.user));
-                dispatch(setEmailToVerify(""));
-                navigate("/chats")
-            }
-        } catch (error) {
-            console.log(error);
-            return setResponse({
                 success: false,
                 message: error.message
             })
@@ -129,7 +98,7 @@ export function useAuth() {
             setLoad(false);
         }
     }
-    return { signUp, signIn,logout, verifyOtp, loading, response, setResponse, emailToVerify ,load}
+    return { signUp, signIn,logout, loading, response, setResponse, emailToVerify ,load}
 }
 export function useCheckAuth() {
     const user = useSelector(state => state.auth.user);

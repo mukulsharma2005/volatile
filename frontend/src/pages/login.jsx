@@ -18,7 +18,7 @@ const Login = ({ type }) => {
 
     const [user, setuser] = useState({
         username: "", password: "", ...(isSignUp && {
-            email: "", confirmPassword: ""
+            confirmPassword: ""
         })
     })
     useEffect(() => {
@@ -36,7 +36,6 @@ const Login = ({ type }) => {
         { name: "username", placeholder: "ex: sumit123" },
         { name: "password", placeholder: "Enter your password", type: "password" },
         ...(isSignUp ? [
-            { name: "email", placeholder: "ex: sumit@gmail.com", type: "email" },
             { name: "confirmPassword", placeholder: "Confirm your password", label: "Confirm Password", type: "password" }
         ] : [])
     ]

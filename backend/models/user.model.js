@@ -2,13 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     username: {
-        type: String, required: true, unique: true, trim: true
-    },
-    email: {
-        type: String, required: true, unique: true, trim: true,
-        validate: {
-            validator: (value) => value.endsWith("@gmail.com"), message: "Email must ends with @gmail.com address"
-        }
+        type: String, required: true, unique: true, trim: true, min:5, max:50
     },
     password: {
         type: String, required: true

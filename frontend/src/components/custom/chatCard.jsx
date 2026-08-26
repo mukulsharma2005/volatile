@@ -11,7 +11,7 @@ const ChatCard = ({ chat ,setChatInfoOpen}) => {
     const dispatch = useDispatch();
     const currentChatId = useSelector(state => state.chats.currentChatId);
     return (
-        <div onClick={() => dispatch(setCurrentChatId(chat._id))} className={`w-[100dvw] lg:w-full overflow-y-auto py-1 border-gray-600 flex gap-3 box-border px-4 items-center justify-between hover:backdrop-brightness-125 ${currentChatId == chat?._id && "backdrop-brightness-125"}`}>
+        <div onClick={() => dispatch(setCurrentChatId(chat._id))} className={`w-full lg:w-full overflow-y-auto py-1 border-gray-600 flex gap-3 box-border px-4 items-center  hover:backdrop-brightness-125 ${currentChatId == chat?._id && "backdrop-brightness-125"}`}>
             <div className="pic ">
                 <Avatar className={"size-10"} onClick={(e)=>{setChatInfoOpen(chat?._id);e.stopPropagation()}}>
                     <AvatarImage className={"w-20"} src={chat?.chatPic || "/volatile/user.jpg"} alt="User" />

@@ -39,7 +39,8 @@ const GroupMember = ({ member, isCreator, isAdmin, chat_id,isGroupDeleted }) => 
                     <DialogTrigger>
                         <EllipsisVertical className='rounded-full cursor-pointer hover:backdrop-brightness-125' />
                     </DialogTrigger>
-                    <DialogContent className={" overflow-hidden theme-bg "}>
+                            
+                    <DialogContent className={" overflow-hidden z-[200] theme-bg "}>
                         <MemberPopover setMemberOptionsOpen={setMemberOptionsOpen} member={member} chat_id={chat_id} isMemberAdmin={isAdmin} isMemberCreator={isCreator} />
                     </DialogContent>
                 </Dialog>
